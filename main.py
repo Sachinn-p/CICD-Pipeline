@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import create_engine, Column, Integer, String, Float
@@ -27,7 +28,7 @@ Base.metadata.create_all(bind=engine)
 class ItemBase(BaseModel):
     name: str
     price: float
-    description: str | None = None
+    description: Optional[str] = None
 
 class Item(ItemBase):
     id: int

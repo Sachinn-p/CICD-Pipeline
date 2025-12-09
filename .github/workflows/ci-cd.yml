@@ -35,7 +35,7 @@ jobs:
         pip install -r requirements.txt
     
     - name: Run pytest tests
-      run: pytest test.py -v --tb=short
+      run: pytest test.py -v --tb=short --junitxml=pytest-results.xml
     
     - name: Run code quality checks
       run: |
@@ -43,12 +43,13 @@ jobs:
         flake8 main.py --max-line-length=100 --ignore=E501,W503
         black --check main.py test.py || true
     
-    - name: Upload coverage reports
+    - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results-${{ matrix.python-version }}
-        path: .pytest_cache/
+        path: pytest-results.xml
+        if-no-files-found: ignore
 
   security-scan:
     runs-on: ubuntu-latest
